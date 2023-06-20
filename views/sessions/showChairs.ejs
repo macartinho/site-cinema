@@ -1,0 +1,36 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row mb-3">
+        <% for (let i=0; i < session.seatNum; i++) {%>
+            <div class="col-6 mb-3">
+                <div>
+                    <h5 class="card-title mb-3 d-inline" id="seat<%= i+1 %>">
+                        Cadeira <%= i+1 %>
+                    </h5>
+                    <form action="/sessions/seat/<%= session._id %>?_method=DELETE" class="d-inline" method="POST">
+                        <input type="text" class="d-none" name="seat[num]" value="<%=i+1%>" required>
+                        <button class="btn btn-danger">Remover Cadeira</button>
+                    </form>
+                </div>
+            </div>
+            <%}%>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <form action="/sessions/seat/<%= session._id %>?_method=PUT" class="d-inline" method="POST">
+                <button class="btn btn-success">Adicionar Cadeira</button>
+            </form>
+        </div>
+        <div class="col-6">
+            <form action="/sessions/<%= session._id %>?_method=DELETE" class="d-inline" method="POST">
+                <button class="btn btn-danger">Deletar Sessão</button>
+            </form>
+        </div>
+    </div>
+    <div class="row mb-3">
+        <div class="col-6">
+            <a href="/sessions/<%= session._id %>/seatDetails" class="btn btn-secondary mb-3 col-3">Ver Detalhes</a>
+        </div>
+        <div class="col-6">
+            <a href="/sessions/<%= session._id %>" class="btn btn-secondary mb-3 col-3">Voltar</a>
+        </div>
+    </div>

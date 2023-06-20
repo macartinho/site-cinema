@@ -1,0 +1,59 @@
+<nav class="navbar sticky-top navbar-expand-lg navbar-dark bg-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">Movie Site</a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavAltMarkup"
+      aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+      <div class="navbar-nav">
+        <a class="nav-link" href="/">Home</a>
+
+
+        <% if(!currentUser){ %>
+          <% }else{%>
+            <% if(currentUser.role==="admin" ){ %>
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  Filmes
+                </a>
+                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                  <li><a class="dropdown-item" href="/movies/new">Adicionar Filme</a></li <li><a class="dropdown-item"
+                    href="/movies">Todos Filmes</a>
+              </li>
+              </ul>
+              </li>
+              <%}%>
+                <% } %>
+
+
+                  <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button"
+                      data-bs-toggle="dropdown" aria-expanded="false">
+                      Sessão
+                    </a>
+                    <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                      <li><a class="dropdown-item" href="/sessions">Todas Sessões</a></li>
+                      <% if(currentUser && currentUser.role==="admin"){ %>
+                      <li><a class="dropdown-item" href="/sessions/new">Criar Sessão</a></li>
+                      <%}%>
+                    </ul>
+                  </li>
+      </div>
+      <div class="navbar-nav ms-auto">
+
+        <% if(!currentUser){ %>
+          <a class="nav-link" href="/login">Login</a>
+          <a class="nav-link" href="/register">Criar Conta</a>
+          <% }else{%>
+            <% if(currentUser.role==="admin" ){ %>
+              <a class="nav-link" href="/registerAdmin">Criar Conta Admin</a>
+              <%}%>
+                <a class="nav-link" href="/logout">Logout</a>
+                <% } %>
+      </div>
+    </div>
+  </div>
+</nav>

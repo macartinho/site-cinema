@@ -1,0 +1,80 @@
+<% layout('layouts/boilerplate') %>
+
+    <div class="container mb-3 mt-3">
+        <div class="row">
+            <div class="col-3 mb-3"></div>
+            <div class="col-2 text-center mb-3">
+                <img src="/images/seatIcon.png" class="img-fluid" style="max-width: 1.5em;" alt="">
+                <p class="d-inline">= Livre</p>
+            </div>
+            <div class="col-2 text-center mb-3">
+                <img src="/images/seatiIcon.png" class="img-fluid" style="max-width: 1.5em;" alt="">
+                <p class="d-inline">= Alugado</p>
+            </div>
+            <div class="col-2 text-center mb-3">
+                <img src="/images/seatoIcon.png" class="img-fluid" style="max-width: 1.5em;" alt="">
+                <p class="d-inline">= Ocupado</p>
+            </div>
+            <div class="col-3 mb-3"></div>
+        </div>
+        <% let step=Math.floor(seat.seatNum/5); %>
+            <% let mod=(seat.seatNum % 5); %>
+                <% let count=1 %>
+                    <% for (let i=0; step> i; i++) {%>
+                        <div class="row row-cols-5 mt-3">
+                            <% for (let i=0; 5> i; i++) {%>
+                                <div class="col">
+                                    <p class="text-center fw-bold">Assento <%= count %>
+                                    </p>
+                                    <div class="mb-3 text-center">
+                                        <% const seat_id=seat.seat.seat.slice(count-1, count).map(x=> x.availability) %>
+                                            <% if(seat_id.toString()==='free' ) { %>
+                                                <img src="/images/seat.png" class="img-fluid" style="max-width: 3em;"
+                                                    alt="">
+                                                <% } else if(seat_id.toString()==='rented' ) {%>
+                                                    <img src="/images/seati.png" class="img-fluid"
+                                                        style="max-width: 3em;" alt="">
+                                                    <% }else if(seat_id.toString()==='occupied' ) {%>
+                                                        <img src="/images/seato.png" class="img-fluid"
+                                                            style="max-width: 3em;" alt="">
+                                                        <% } %>
+                                    </div>
+                                </div>
+                                <% count++ %>
+                                    <%}%>
+                        </div>
+                        <%}%>
+                            <% if(mod) { %>
+                                <div class="row mt-3">
+                                    <% for (let i=0; mod> i; i++) {%>
+                                        <div class="col">
+                                            <p class="text-center fw-bold">Assento <%= count %>
+                                            </p>
+                                            <div class="mb-3 text-center">
+                                                <% const seat_id=seat.seat.seat.slice(count-1, count).map(x=>
+                                                    x.availability)%>
+                                                    <% if(seat_id.toString()==='free' ) { %>
+                                                        <img src="/images/seat.png" class="img-fluid"
+                                                            style="max-width: 3em;" alt="">
+                                                        <% } else if(seat_id.toString()==='rented' ) {%>
+                                                            <img src="/images/seati.png" class="img-fluid"
+                                                                style="max-width: 3em;" alt="">
+                                                            <% }else if(seat_id.toString()==='occupied' ) {%>
+                                                                <img src="/images/seato.png" class="img-fluid"
+                                                                    style="max-width: 3em;" alt="">
+                                                                <% } %>
+                                            </div>
+                                        </div>
+                                        <% count++ %>
+                                            <%}%>
+                                </div>
+                                <%}%>
+    </div>
+    <script id="seat_status" type="application/json">
+        <%= seat.seat.seat.map(x => x.availability) %>
+    </script>
+    <script id="session_id" type="application/json">
+        <%= seat._id %>
+    </script>
+    <script crossorigin="anonymous" src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="/javascripts/seatScripts.js"></script>

@@ -1,0 +1,130 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Nova Sessão</h1>
+        <div class="col-9 offset-3">
+            <form action="/sessions" method="POST" novalidate class="validated-form">
+                <div class="mb-3 col-6">
+                    <label class="form-label" for="slmovie">Filme</label>
+                    <select class="form-control form-control-sm border border-dark" name="session[movie_id]" id="slmovie" required>
+                        <option class="text-muted d-none" value="" selected>Selecione o filme</option>
+                        <% for(let movie of movies){ %>
+                            <option value="<%= movie._id %>">
+                                <%= movie.title %>
+                            </option>
+                            <option class="d-none" value="<%= movie.runtime %>"></option>
+                            <option class="d-none" value="<%= movie.releaseDate %>"></option>
+                            <% } %>
+                    </select>
+                    <span class="text-muted" id="runtimeSpan"></span>
+                </div>
+
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="seat">Number of seats</label>
+                    <input class="form-control border border-dark" type="number" min="1" max="50" id="seat" name="session[seatNum]" required>
+                </div>
+                <div class="row">
+                    <label class="form-label">Endereço</label>
+                <div class="mb-3 col-1">
+                    <select class="form-control form-control-sm border border-dark" name="location[state]" id="estado" required>
+                        <option class="text-muted d-none" value="" selected>Estado</option>
+                        <% for(let estado of municipios.municipios){ %>
+                            <option value="<%= estado.nome %>">
+                                <%= estado.sigla %>
+                            </option>
+                            <option class="d-none" value="<%= estado.cidades %>"></option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="mb-3 col-3">
+                    <select class="form-control form-control-sm border border-dark" name="location[city]" id="cidade" required>
+                        <option class="text-muted" value="" selected>Cidade</option>
+                    </select>
+                </div>
+                <div class="mb-3 col-2">
+                    <input class="form-control form-control-sm border border-dark" type="number" id="cep" placeholder="CEP" name="location[cep]" required>
+                </div>
+            </div>
+
+                <div class="row">
+                <div class="mb-3 col-5">
+                    <input class="form-control form-control-sm border border-dark" type="text" id="street" name="location[street]" placeholder="Rua"required>
+                </div>
+                <div class="mb-3 col-2">
+                    <input class="form-control form-control-sm border border-dark" type="number" id="num" name="location[number]" placeholder="Número" required>
+                </div>
+            </div>
+                
+
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="airtimedate">Session start</label>
+                    <input class="form-control border border-dark" type="datetime-local" min="" id="airtimedate" name="session[airtime]" required>
+                </div>
+
+                <div class="mb-3 col-5
+                ">
+                    <label class="form-label" for="endtimedate">Session end</label>
+                    <input class="form-control border border-dark" type="datetime-local" id="endtimedate" min="" name="session[endtime]" required>
+                </div>
+
+                <div class="mb-3">
+                    <button class="btn btn-success">Create Session</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const select = document.querySelector('#slmovie');
+        const span = document.querySelector('#runtimeSpan');
+        const hspan = document.querySelector('#hiddenSpan');
+        const sessionstart = document.querySelector('#airtimedate');
+        const sessionend = document.querySelector('#endtimedate');
+        const estadoSelect = document.querySelector('#estado');
+        const cidadeSelect = document.querySelector('#cidade');
+
+        function populateCidade() {
+            let municipios = (estadoSelect.options[estadoSelect.selectedIndex+1].value).split(',')
+            while (cidadeSelect.firstChild) {
+                cidadeSelect.removeChild(cidadeSelect.firstChild);
+                    }
+            for(let municipio of municipios){ 
+                const cidadeOption = new Option(municipio, municipio)
+                cidadeSelect.appendChild(cidadeOption)
+            }
+        }
+
+        estadoSelect.addEventListener('change', populateCidade);
+        
+        function createSpan() {
+            var runtime = select.options[select.selectedIndex+1].value
+            if (select.value == '') runtimeSpan.innerText = ''; else runtimeSpan.innerText = runtime+" min" ;
+        }
+        function addMinDate() {
+            var release = (new Date(select.options[select.selectedIndex+2].value)).toISOString().slice(0, 16);
+            if (select.value == '') runtimeSpan.innerText = ''; else {sessionstart.min=release; sessionend.min=release};
+        }
+        select.addEventListener('change', createSpan);
+        select.addEventListener('change', addMinDate);
+
+        
+        
+
+        
+        
+        
+        sessionstart.addEventListener('change', updateDate);
+        sessionend.addEventListener('change', updateDate);
+
+        function updateDate(evt) {
+            const runt = parseInt(runtimeSpan.innerText);
+
+            if (evt.currentTarget == sessionstart && sessionend.value == '') {
+                sessionend.value = sessionstart.value;
+                sessionend.stepUp((Math.ceil(sessionend.value.slice(14) / 5) * 5) - sessionend.value.slice(14) + 20);
+                if (runt) { console.log(runt); sessionend.stepUp(runt); }
+            } else if (evt.currentTarget == sessionend && sessionstart.value == '') {
+                sessionstart.value = sessionend.value;
+            }
+        }
+
+    </script>

@@ -1,0 +1,96 @@
+<% layout('layouts/boilerplate') %> 
+    <div class="row">
+        <h1 class="text-center">Edit Movie</h1>
+        <div class="col-9 offset-3">
+            <form action="/sessions/<%= session._id %>?_method=PUT" method="POST" novalidate class="validated-form">
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="sessionstart">Inicio da Sessao</label>
+                    <% const airtimedate = session.airtime.toISOString().split('.')[0] %> 
+                    <input class="form-control border border-dark" type="datetime-local" id="sessionstart" name="session[airtime]"
+                        value="<%= airtimedate.replace(airtimedate.split('T')[1], session.airtime.toLocaleTimeString('pt-BR')) %>" required>
+                </div>
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="sessionend">Fim da Sessao</label>
+                    <% const endtimedate = session.endtime.toISOString().split('.')[0] %> 
+                    <input class="form-control border border-dark" type="datetime-local" id="sessionend" name="session[endtime]"
+                        value="<%= endtimedate.replace(endtimedate.split('T')[1], session.endtime.toLocaleTimeString('pt-BR')) %>" required>
+                </div>
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="seat">Number of seats</label>
+                    <input class="form-control border border-dark" type="number" min="1" max="50" id="seat" name="session[seatNum]" value="<%= session.seatNum %>" required>
+                </div>
+                <div class="row">
+                    <label class="form-label">Endereço</label>
+                <div class="mb-3 col-1">
+                    
+                    
+                    <select class="form-control form-control-sm border border-dark" name="location[state]" id="estado" required>
+                        <option class="text-muted d-none" value="<%= session.location.state %>" selected><%= session.selectedState %></option>
+                        <option class="d-none" value="<%= session.selectedCities %>"></option>
+                        <% for(let estado of municipios.municipios){ %>
+                            <option value="<%= estado.nome %>">
+                                <%= estado.sigla %>
+                            </option>
+                            <option class="d-none" value="<%= estado.cidades %>"></option>
+                            <% } %>
+                    </select>
+                </div>
+                <div class="mb-3 col-3">
+                    <select class="form-control form-control-sm border border-dark" name="location[city]" id="cidade" required>
+                        <option class="text-muted" value="<%= session.location.city %>" selected><%= session.location.city %></option>
+                    </select>
+                </div>
+                <div class="mb-3 col-2">
+                    <input class="form-control form-control-sm border border-dark" type="number" id="cep" placeholder="CEP" value="<%= session.location.cep %>" name="location[cep]" required>
+                </div>
+            </div>
+
+                <div class="row">
+                <div class="mb-3 col-5">
+                    <input class="form-control form-control-sm border border-dark" type="text" id="street" name="location[street]" placeholder="Rua" value="<%= session.location.street %>" required>
+                </div>
+                <div class="mb-3 col-2">
+                    <input class="form-control form-control-sm border border-dark" type="number" id="num" name="location[number]" placeholder="Número" value="<%= session.location.number %>" required>
+                </div>
+            </div>
+                <div class="d-none">
+                    <label class="form-label" for="hmovie"></label>
+                    <input class="form-control" type="text" id="hmovie" name="session[movie_id]" value="<%= session.movie_id %>"required>
+                </div>
+                <div class="mb-3">
+                    <button class="btn btn-success">Update Session</button>
+                </div>
+            </form>
+            <div class="mb-3">
+                <a href="/sessions/<%= session._id %>">Back to Session</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const estadoSelect = document.querySelector('#estado');
+        const cidadeSelect = document.querySelector('#cidade');
+
+        const firstCities = (estadoSelect.options[estadoSelect.selectedIndex+1].value).split(',');
+        
+            for(let city of firstCities){ 
+                const cidadeOption = new Option(city, city)
+                cidadeSelect.appendChild(cidadeOption)
+            }
+
+        function populateCidade() {
+            let municipios = (estadoSelect.options[estadoSelect.selectedIndex+1].value).split(',')
+            while (cidadeSelect.firstChild) {
+                cidadeSelect.removeChild(cidadeSelect.firstChild);
+                    }
+            for(let municipio of municipios){ 
+                const cidadeOption = new Option(municipio, municipio)
+                cidadeSelect.appendChild(cidadeOption)
+            }
+        }
+
+        estadoSelect.addEventListener('change', populateCidade);
+    </script>
+
+    
+   

@@ -1,0 +1,67 @@
+<% layout('layouts/boilerplate') %>
+<script>
+const mapToken = '<%-process.env.MAPBOX_TOKEN%>';
+const coordinate = '<%-session.location.geometry.coordinates%>';
+</script>
+
+    <div class="row">
+        <div class="col-6 offset-3">
+            <div class="card mb-3">
+                <img crossorigin="anonymous" src="<%= session.movie_id.images[0].url  %>" class="card-img-top w-75 align-self-center" alt="...">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        <%= session.movie_id.title %>
+                    </h5>
+                    <p class="card-text">
+                        <%= session.movie_id.description %>
+                    </p>
+                    <p class="text-muted">
+                        <%= session.movie_id.genre %>
+                    </p>
+                </div>
+                <div class="col-12">
+                <ul class="list-group list-group-flush">
+                    <li class="list-group-item">
+                        <strong>Runtime: </strong>
+                        <%= session.movie_id.runtime %> min
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Data: </strong>
+                        <%const dia=session.airtime.toLocaleDateString('pt-BR', { weekday: 'long' , year: 'numeric' ,
+                            month: 'long' , day: 'numeric' }) %>
+                            <%= dia.charAt(0).toUpperCase() + dia.slice(1) %>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Inicio da Sessão: </strong>
+                        <%= session.airtime.toLocaleTimeString('pt-BR') %>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Fim da Sessão: </strong>
+                        <%= session.endtime.toLocaleTimeString('pt-BR')%>
+                    </li>
+                    <li class="list-group-item">
+                        <strong>Local: </strong>
+                        <%let cepArray = Array.from(String(session.location.cep), Number) ; const cepIndex = cepArray.length -3%>
+                        <%= session.location.street%> <%= session.location.number%>, <%= cepArray.join('')%>
+                    </li>
+                </ul>
+                <div class="col-6 m-auto border border-info" id="map" style="width:50em; height: 300px;"></div>
+                </div>
+                
+                <div class="card-body">
+                    <% if(currentUser && currentUser.role==="admin"){ %>
+                    <a href="/sessions/<%= session._id %>/edit" class="card-link btn btn-primary">Editar Sessão</a>
+                    <form action="/sessions/<%= session._id %>?_method=DELETE" class="d-inline" method="POST">
+                        <button class="btn btn-danger">Deletar Sessão</button>
+                    </form>
+                    <a href="/sessions/<%= session._id %>/session" class="card-link btn btn-primary">Detalhes Sessão</a>
+                    <%}%>
+                    <a href="/sessions/<%= session._id %>/seat" class="card-link btn btn-primary">Assentos Disponíveis</a>
+                </div>
+            </div>
+            
+        </div>
+       
+    </div>
+
+    <script src="/javascripts/showPageMap.js"></script>

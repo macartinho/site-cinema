@@ -1,0 +1,61 @@
+<% layout('layouts/boilerplate') %>
+    <div class="mb-3">
+        <h1>Filmes</h1>
+    </div>
+    <!-- <% for (let movie of movies) { %>
+
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <%if(movie.images.length){%>
+                        <img src="<%= movie.images[0].url %>" class="img-fluid">
+                        <%}else{%>
+                            <img src="https://m.media-amazon.com/images/M/MV5BYjg3NmE0OTMtNDE1Yy00NTcxLWJjNzUtMzhhNGQxZmE3ZGRhXkEyXkFqcGdeQXVyNTUyMTMyMDg@._V1_SX300.jpg"
+                                class="img-fluid">
+                            <%}%>
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <%= movie.title %>
+                        </h5>
+                        <p class="card-text">
+                            <%= movie.description %>
+                        </p>
+                        <p class="card-text">
+                            <small class="text-muted">
+                                <%= movie.genre %>
+                            </small>
+                        </p>
+                        <a href="/movies/<%= movie._id %>" class="btn btn-secondary">Veja <%= movie.title %></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %> -->
+        <div class="row">
+            <% for (let movie of movies) { %>
+                    <div class="col-2 mb-3">
+                        <div>
+                            <%if(movie.images.length){%>
+                                <img crossorigin="anonymous" src="<%= movie.images[0].url %>" class="img-fluid">
+                                <%}else{%>
+                                    <img crossorigin="anonymous" src="https://m.media-amazon.com/images/M/MV5BYjg3NmE0OTMtNDE1Yy00NTcxLWJjNzUtMzhhNGQxZmE3ZGRhXkEyXkFqcGdeQXVyNTUyMTMyMDg@._V1_SX300.jpg"
+                                        class="img-fluid">
+                                    <%}%>
+                        </div>
+                        <div>
+                            <h5 class="card-title mb-3">
+                                <%= movie.title %>
+                            </h5>
+                            <a href="/movies/<%= movie._id %>" class="btn btn-secondary">Veja <%= movie.title %></a>
+                        </div>
+                    </div>
+                <% } %>
+            </div>
+                    <%- paginationHtml %>
+
+
+                        <script>
+
+                        </script>

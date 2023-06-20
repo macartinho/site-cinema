@@ -1,0 +1,55 @@
+<% layout('layouts/boilerplate') %>
+    <div class="row">
+        <h1 class="text-center">Novo Filme</h1>
+        <div class="col-6 offset-3">
+            <form action="/movies" method="POST" novalidate class="validated-form" enctype="multipart/form-data">
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="title">Nome</label>
+                    <input class="form-control border border-dark" type="text" id="title" name="movie[title]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="description">Descrição</label>
+                    <textarea class="form-control border border-dark" type="text" id="description" name="movie[description]" required></textarea>
+                </div>
+                <div class="mb-3 col-3">
+                    <label class="form-label" for="date">Data de lançamento</label>
+                    <input class="form-control border border-dark" type="date" id="date" name="movie[releaseDate]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="genre">Gênero</label>
+                    <input class="form-control border border-dark" type="text" id="genre" name="movie[genre]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="image">Imagens</label>
+                    <input class="form-control border border-dark" type="file" name="image" id="image" multiple>
+                </div>
+                <!--<div class="mb-3">
+                    <label class="form-label" for="img">Url da imagem</label>
+                    <input class="form-control border border-dark" type="text" id="img" name="movie[img]" required>
+                </div> -->
+                <div class="mb-3 col-5">
+                    <label class="form-label" for="runtime">Duração</label>
+                    <div class="input-group mb-3">
+                        <input class="form-control border border-dark" type="number" id="runtime" min="1" max="900" name="movie[runtime]" required>
+                        <span class="input-group-text" id="basic-addon2" aria-describedby="runtime">minutes</span>
+                      </div>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="director">Direção</label>
+                    <input class="form-control border border-dark" type="text" id="director" name="movie[director]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="writer">Roteiristas</label>
+                    <input class="form-control border border-dark" type="text" id="writer" name="movie[writer]" required>
+                </div>
+                <div class="mb-3">
+                    <label class="form-label" for="actors">Artistas</label>
+                    <input class="form-control border border-dark" type="text" id="actors" name="movie[actors]" required>
+                </div>
+                
+                <div class="mb-3">
+                    <button class="btn btn-success">Adicionar Filme</button>
+                </div>
+            </form>
+        </div>
+    </div>

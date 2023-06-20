@@ -1,0 +1,60 @@
+<% layout('layouts/boilerplate') %>
+<div class="row mb-3">
+    <% for (let seat of session.seat.seat) { %>
+        <div class="col-6 mb-3">
+            <div>
+                <h5 class="card-title mb-3 d-inline" id="seat<%= seat.num %>">
+                    Cadeira <%= seat.num %>
+                </h5>
+                <p class="fw-normal hidden"> Mudanças: <%= seat.stats.length %>
+                </p>
+                <div class="d-none" id="stats">
+                    <% for (let status of seat.stats) { %>
+                        <p class="fw-bold">Tempo: <span class="fw-normal">
+                                <%= status.changeTime.toLocaleString('pt-BR') %>
+                            </span></p>
+                        <p class="fw-bold">Mudança: <span class="fw-normal">
+                                <%= status.changeTo %>
+                            </span></p>
+                        <%}%>
+                </div>
+                <%let alugada='' ; %>
+                    <%if(!(seat.user_id)){%>
+                        <%alugada="Não" %>
+                            <%}else{alugada="Sim"}%>
+                                <p class="fw-normal"> Alugada: <span class="rentStatus">
+                                        <%= alugada %>
+                                    </span></p>
+                                <%if(alugada=="Sim"){%>
+                                    <div>
+                                        <form action="/sessions/user/<%= session._id %>?_method=DELETE"
+                                            class="d-inline" method="POST">
+                                            <input type="text" class="d-none" name="user[_id]"
+                                                value="<%=seat.user_id%>" required>
+                                            <input type="text" class="d-none" name="user[numSeat]"
+                                                value="<%=seat.num%>" required>
+                                            <button class="btn btn-danger">Deletar Usuario</button>
+                                        </form>
+                                    </div>
+                                    <%}%>
+            </div>
+        </div>
+        <% } %>
+        <a href="/sessions/<%= session._id %>/session" class="card-link btn btn-primary col-3">Voltar</a>
+</div>
+
+<script>
+    const cadeiraSelect = document.querySelectorAll('.hidden');
+
+    cadeiraSelect.forEach(hidden => {
+        hidden.addEventListener('click', function hideUnhideStatus(event) {
+            if (hidden.classList.contains('hidden')) {
+                hidden.nextElementSibling.classList.remove('d-none');
+                hidden.classList.remove('hidden');
+            } else {
+                hidden.nextElementSibling.classList.add('d-none');
+                hidden.classList.add('hidden');
+            }
+        });
+    });
+</script>

@@ -1,0 +1,33 @@
+<% if(success && success.length) {%>
+    <div class="alert alert-success alert-dismissible fade show" role="alert" id="alert-1">
+        <%= success %>
+            <button type='button' class="btn-close" data-bs-dismiss="alert" aria-label="Close" id="btn-1"></button>
+    </div>
+    <% } %>
+
+        <% if(error && error.length) {%>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alert-2">
+                <%= error %>
+                    <button type='button' class="btn-close" data-bs-dismiss="alert" aria-label="Close"
+                        id="btn-2"></button>
+            </div>
+            <% } %>
+
+                <script id="error" type="application/json"><%= error %></script>
+                <script id="success" type="application/json"><%= success %></script>
+                <script>
+                    const success = document.getElementById('success').textContent.trim();
+                    const error = document.getElementById('error').textContent.trim();
+                    if (error && error.length) {
+                        const btn2 = document.getElementById('btn-2');
+                        setTimeout(function () {
+                                btn2.click();
+                            }, 8000);
+                    }
+                    if (success && success.length) {
+                        const btn1 = document.getElementById('btn-1');
+                        setTimeout(function () {
+                                btn1.click();
+                            }, 8000);
+                    }
+                </script>

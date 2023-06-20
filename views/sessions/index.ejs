@@ -1,0 +1,35 @@
+<% layout('layouts/boilerplate') %>
+
+    <h1>Sessões</h1>
+    <% for (let session of sessions) { %>
+        <div class="card mb-3">
+            <div class="row">
+                <div class="col-md-4">
+                    <img crossorigin="anonymous" src="<%= session.movie_id.images[0].url %>" class="img-fluid">
+                </div>
+                <div class="col-md-8">
+                    <div class="card-body">
+                        <h5 class="card-title mb-3">
+                            <%= session.movie_id.title %>
+                        </h5>
+                        <p class="card-text"><strong>Inicio da Sessão: </strong> <%= session.airtime.toLocaleDateString('pt-BR', { year: 'numeric', month: 'long', day: 'numeric', hour:'numeric', minute:'numeric' }) %></p>
+                        <p class="card-text"><strong>Fim da Sessão: </strong> <%= session.endtime.toLocaleDateString('pt-BR', {  year: 'numeric', month: 'long', day: 'numeric',hour:'numeric', minute:'numeric' }) %></p>
+                        <%const currentime = new Date()%>
+                        <% if(currentime>session.airtime){ %>
+                            <% if(currentime>session.endtime){ %>
+                            <p class="card-text"><strong class="text-danger">Encerrado</strong></p>
+                            <% }else{ %>
+                                <p class="card-text"><strong class="text-warning">Em Andamento</strong></p>
+                        <% }} %>
+                        <p class="card-text">
+                            <small class="text-muted"><%= session.movie_id.genre %></small>
+                        </p>
+                        <a href="/sessions/<%= session._id %>" class="btn btn-secondary">Ver Sessão</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <% } %>
+        
+        <%- paginationHtml %>
+    
